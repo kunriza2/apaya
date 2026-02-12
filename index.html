@@ -237,18 +237,24 @@ and choose you every single day.
 Let’s write our story together 💚`;
 
 function typeLetter(){
-    let i=0;
+    let i = 0;
+
     function typing(){
-        if(i<message.length){
+        if(i < message.length){
             letter.innerHTML += message.charAt(i);
             i++;
-            setTimeout(typing,40);
+            setTimeout(typing, 40);
         } else {
-            setTimeout(()=>secondPopup.classList.remove("hidden"),800);
+            // Wait 10 seconds AFTER letter finishes
+            setTimeout(() => {
+                secondPopup.classList.remove("hidden");
+            }, 10000); // 10000ms = 10 seconds
         }
     }
+
     typing();
 }
+
 
 /* Sakura petals */
 function startPetals(){
