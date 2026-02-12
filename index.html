@@ -44,44 +44,48 @@ body {
     padding: 30px;
     border-radius: 20px;
     box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-    z-index: 10;
     max-width: 400px;
     width: 100%;
-    position: relative;
-}
-
-h1 {
-    color: #ff2e63;
-    font-size: 22px;
+    z-index: 10;
 }
 
 .buttons {
-    position: relative;
-    height: 80px;
     margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    position: relative;
 }
 
 button {
     padding: 10px 20px;
     font-size: 16px;
-    border: none;
     border-radius: 25px;
+    border: none;
     cursor: pointer;
-    position: absolute;
     transition: 0.3s;
+    position: relative;
 }
 
-#yesBtn { background: #ff2e63; color: white; left: 15%; }
-#yesBtn:hover { transform: scale(1.1); }
+#yesBtn, #yes2 {
+    background: #ff2e63;
+    color: white;
+}
 
-#noBtn { background: #ccc; left: 55%; }
+#yesBtn:hover, #yes2:hover {
+    transform: scale(1.1);
+}
+
+#noBtn, #no2 {
+    background: #ccc;
+}
 
 .hidden { display: none; }
 
 /* Success scene */
 #success {
     position: absolute;
-    z-index: 20;
+    z-index: 5;
     max-width: 600px;
 }
 
@@ -108,7 +112,7 @@ button {
     top: -20px;
     font-size: 20px;
     animation: fall linear forwards;
-    z-index: 30;
+    z-index: 2;
 }
 
 @keyframes fall {
@@ -145,7 +149,7 @@ button {
 </div>
 
 <!-- Second Surprise Popup -->
-<div class="popup hidden" id="secondPopup">
+<div class="popup hidden" id="secondPopup" style="position:absolute; z-index:15;">
     <h1>Will you be my girlfriend? 💍💕</h1>
     <div class="buttons">
         <button id="yes2">YESSS 💖</button>
@@ -168,34 +172,30 @@ const secondPopup = document.getElementById("secondPopup");
 const no2 = document.getElementById("no2");
 const yes2 = document.getElementById("yes2");
 
-/* No button runs away */
+/* Move button randomly (safe version) */
 function moveButton(btn) {
-    const x = Math.random() * 200 - 100;
-    const y = Math.random() * 100 - 50;
+    const x = Math.random() * 150 - 75;
+    const y = Math.random() * 80 - 40;
     btn.style.transform = `translate(${x}px, ${y}px)`;
 }
 
-noBtn.addEventListener("mouseover", () => moveButton(noBtn));
-noBtn.addEventListener("click", () => moveButton(noBtn));
+noBtn.addEventListener("mouseenter", () => moveButton(noBtn));
 noBtn.addEventListener("touchstart", () => moveButton(noBtn));
 
-no2.addEventListener("mouseover", () => moveButton(no2));
-no2.addEventListener("click", () => moveButton(no2));
+no2.addEventListener("mouseenter", () => moveButton(no2));
 no2.addEventListener("touchstart", () => moveButton(no2));
 
-/* Yes clicked first time */
+/* First YES */
 yesBtn.addEventListener("click", function() {
-
     popup.classList.add("hidden");
     success.classList.remove("hidden");
     music.play().catch(()=>{});
-
     startPetals();
     typeLetter();
 });
 
 /* Typing Love Letter */
-const message = 
+const message =
 `Dear Ambar,
 
 From the moment i know you,
@@ -224,11 +224,11 @@ function typeLetter() {
     typing();
 }
 
-/* Falling rose petals */
+/* Petals */
 function startPetals() {
     setInterval(() => {
         const petal = document.createElement("div");
-        petal.classList.add("petal");
+        petal.className = "petal";
         petal.innerHTML = "🌹";
         petal.style.left = Math.random() * 100 + "vw";
         petal.style.fontSize = (Math.random() * 15 + 15) + "px";
@@ -239,17 +239,16 @@ function startPetals() {
 }
 
 /* Floating hearts */
-function createHeart() {
+setInterval(() => {
     const heart = document.createElement("div");
-    heart.classList.add("heart");
+    heart.className = "heart";
     heart.innerHTML = "💖";
     heart.style.left = Math.random() * 100 + "vw";
     heart.style.fontSize = (Math.random() * 15 + 15) + "px";
     heart.style.animationDuration = (Math.random() * 3 + 3) + "s";
     document.body.appendChild(heart);
     setTimeout(() => heart.remove(), 6000);
-}
-setInterval(createHeart, 400);
+}, 400);
 
 /* Second YES */
 yes2.addEventListener("click", function(){
