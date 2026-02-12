@@ -6,54 +6,49 @@
 <title>For Ambar 💖</title>
 
 <style>
-* { box-sizing: border-box; margin:0; padding:0; }
+* {
+    box-sizing: border-box;
+}
 
 body {
+    margin: 0;
     height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    background: linear-gradient(135deg,#ff9a9e,#fad0c4);
+    background: linear-gradient(135deg, #ff9a9e, #fad0c4);
     font-family: 'Segoe UI', sans-serif;
     overflow: hidden;
     text-align: center;
+    padding: 20px;
 }
 
-/* Background container (for blur effect) */
-#background {
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    z-index: 0;
-}
-
-.blur {
-    filter: blur(8px);
-    transition: 1s;
-}
-
-/* Floating hearts */
+/* Floating hearts background */
 .heart {
-    position: absolute;
-    bottom: -20px;
+    position: fixed;
+    bottom: -50px;
     font-size: 18px;
-    animation: floatUp linear forwards;
-    opacity: .6;
+    animation: floatUp linear infinite;
+    opacity: 0.6;
+    z-index: 1;
 }
 
 @keyframes floatUp {
-    to { transform: translateY(-110vh) scale(1.5); opacity: 0; }
+    to {
+        transform: translateY(-110vh) scale(1.5);
+        opacity: 0;
+    }
 }
 
 /* Popup */
 .popup {
-    background: rgba(255,255,255,.95);
+    background: rgba(255,255,255,0.95);
     padding: 30px;
     border-radius: 20px;
-    box-shadow: 0 10px 30px rgba(0,0,0,.2);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
     z-index: 10;
     max-width: 400px;
-    width: 90%;
+    width: 100%;
 }
 
 h1 {
@@ -62,39 +57,44 @@ h1 {
 }
 
 .buttons {
-    margin-top: 25px;
-    display: flex;
-    justify-content: space-around;
+    position: relative;
+    height: 80px;
+    margin-top: 20px;
 }
 
 button {
     padding: 10px 20px;
     font-size: 16px;
-    border-radius: 25px;
     border: none;
+    border-radius: 25px;
     cursor: pointer;
-    transition: .3s;
+    position: absolute;
+    transition: 0.3s;
 }
 
 #yesBtn {
     background: #ff2e63;
     color: white;
+    left: 15%;
 }
 
-#yesBtn:hover { transform: scale(1.1); }
+#yesBtn:hover {
+    transform: scale(1.1);
+}
 
 #noBtn {
     background: #ccc;
-    position: relative;
+    left: 55%;
 }
 
-.hidden { display:none; }
+.hidden {
+    display: none;
+}
 
 /* Success Scene */
 #success {
     position: absolute;
     z-index: 20;
-    width: 90%;
     max-width: 600px;
 }
 
@@ -107,7 +107,7 @@ button {
     50% { transform: scale(1.2); }
 }
 
-/* Love letter */
+/* Love Letter */
 .love-letter {
     margin-top: 20px;
     font-size: 18px;
@@ -122,6 +122,7 @@ button {
     top: -20px;
     font-size: 20px;
     animation: fall linear forwards;
+    z-index: 30;
 }
 
 @keyframes fall {
@@ -131,16 +132,21 @@ button {
     }
 }
 
-@media(max-width:500px){
-    h1 { font-size:18px; }
-    .big-heart { font-size:60px; }
-    .love-letter { font-size:16px; }
+/* Cinematic blur */
+.blur-bg {
+    filter: blur(8px);
+    transition: 1s;
+}
+
+@media (max-width: 500px) {
+    h1 { font-size: 18px; }
+    .love-letter { font-size: 16px; }
+    .big-heart { font-size: 60px; }
 }
 </style>
 </head>
-<body>
 
-<div id="background"></div>
+<body>
 
 <div class="popup" id="popup">
     <h1>Ambar, will you be mine? 💕</h1>
@@ -152,13 +158,13 @@ button {
 
 <div id="success" class="hidden">
     <div class="big-heart">💖</div>
-    <h1>She said YES 🥹✨</h1>
+    <h1>She said YES 🥰✨</h1>
     <div class="love-letter" id="letter"></div>
 </div>
 
-<!-- You can replace this with your own local mp3 file -->
+<!-- Romantic Music (Replace src with your own if you want) -->
 <audio id="music" loop>
-    <source src="romantic.mp3" type="audio/mpeg">
+    <source src="https://www.bensound.com/bensound-music/bensound-romantic.mp3" type="audio/mp3">
 </audio>
 
 <script>
@@ -168,35 +174,31 @@ const popup = document.getElementById("popup");
 const success = document.getElementById("success");
 const letter = document.getElementById("letter");
 const music = document.getElementById("music");
-const background = document.getElementById("background");
 
-/* NO button escape (works on mobile too) */
-function moveNoButton() {
-    const x = Math.random() * 200 - 100;
-    const y = Math.random() * 100 - 50;
-    noBtn.style.transform = `translate(${x}px, ${y}px)`;
-}
+/* No button runs away */
+noBtn.addEventListener("mouseover", function() {
+    const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
+    const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
+    noBtn.style.position = "fixed";
+    noBtn.style.left = x + "px";
+    noBtn.style.top = y + "px";
+});
 
-noBtn.addEventListener("mouseover", moveNoButton);
-noBtn.addEventListener("click", moveNoButton);
-noBtn.addEventListener("touchstart", moveNoButton);
-
-/* YES clicked */
-yesBtn.addEventListener("click", function(){
+/* Yes clicked */
+yesBtn.addEventListener("click", function() {
 
     popup.classList.add("hidden");
     success.classList.remove("hidden");
+    document.body.classList.add("blur-bg");
 
-    background.classList.add("blur");
-
-    music.play().catch(()=>{});
+    music.play();
 
     startPetals();
     typeLetter();
 });
 
-/* Typing letter */
-const message =
+/* Typing Love Letter */
+const message = 
 `Dear Ambar,
 
 From the moment you smiled,
@@ -204,49 +206,49 @@ my world felt different.
 
 If you let me,
 I promise to make you laugh,
-support your dreams,
-and love you endlessly.
+to support your dreams,
+and to love you endlessly.
 
-Today begins our beautiful story 💕`;
+Today starts our beautiful story 💕`;
 
-function typeLetter(){
-    let i=0;
-    function typing(){
-        if(i<message.length){
+function typeLetter() {
+    let i = 0;
+    function typing() {
+        if (i < message.length) {
             letter.innerHTML += message.charAt(i);
             i++;
-            setTimeout(typing,40);
+            setTimeout(typing, 40);
         }
     }
     typing();
 }
 
-/* Petals */
-function startPetals(){
-    setInterval(()=>{
-        const petal=document.createElement("div");
-        petal.className="petal";
-        petal.innerHTML="🌹";
-        petal.style.left=Math.random()*100+"vw";
-        petal.style.fontSize=(Math.random()*15+15)+"px";
-        petal.style.animationDuration=(Math.random()*3+3)+"s";
+/* Falling rose petals */
+function startPetals() {
+    setInterval(() => {
+        const petal = document.createElement("div");
+        petal.classList.add("petal");
+        petal.innerHTML = "🌹";
+        petal.style.left = Math.random() * 100 + "vw";
+        petal.style.fontSize = (Math.random() * 15 + 15) + "px";
+        petal.style.animationDuration = (Math.random() * 3 + 3) + "s";
         document.body.appendChild(petal);
-        setTimeout(()=>petal.remove(),6000);
-    },300);
+        setTimeout(() => petal.remove(), 6000);
+    }, 300);
 }
 
 /* Floating hearts background */
-setInterval(()=>{
-    const heart=document.createElement("div");
-    heart.className="heart";
-    heart.innerHTML="💖";
-    heart.style.left=Math.random()*100+"vw";
-    heart.style.fontSize=(Math.random()*15+15)+"px";
-    heart.style.animationDuration=(Math.random()*3+3)+"s";
-    background.appendChild(heart);
-    setTimeout(()=>heart.remove(),6000);
-},400);
-
+function createHeart() {
+    const heart = document.createElement("div");
+    heart.classList.add("heart");
+    heart.innerHTML = "💖";
+    heart.style.left = Math.random() * 100 + "vw";
+    heart.style.fontSize = (Math.random() * 15 + 15) + "px";
+    heart.style.animationDuration = (Math.random() * 3 + 3) + "s";
+    document.body.appendChild(heart);
+    setTimeout(() => heart.remove(), 6000);
+}
+setInterval(createHeart, 400);
 </script>
 
 </body>
