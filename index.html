@@ -153,6 +153,65 @@ button {
     .love-letter { font-size: 16px; }
     .big-heart { width:70px; height:70px; }
 }
+    /* ===== BROWNIE TICKET ===== */
+.ticket-container {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(0,0,0,0.5);
+    backdrop-filter: blur(4px);
+    z-index: 30;
+    animation: fadeIn 1s ease forwards;
+}
+
+.ticket {
+    background: #fff8f0;
+    border: 3px dashed #7fbf7f;
+    padding: 30px 40px;
+    border-radius: 20px;
+    max-width: 350px;
+    text-align: center;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+    position: relative;
+    animation: popIn 0.6s ease;
+}
+
+.ticket h2 {
+    color: #4b6f4b;
+    margin-bottom: 15px;
+}
+
+.ticket .big-text {
+    font-size: 22px;
+    font-weight: bold;
+    color: #7fbf7f;
+    margin-top: 10px;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes popIn {
+    from { transform: scale(0.7); opacity:0; }
+    to { transform: scale(1); opacity:1; }
+}
+
+/* Sparkle */
+.sparkle {
+    position: fixed;
+    font-size: 16px;
+    animation: sparkle 1s ease-out forwards;
+}
+
+@keyframes sparkle {
+    0% { transform: scale(0.5); opacity: 1; }
+    100% { transform: scale(2); opacity: 0; }
+}
+
 </style>
 </head>
 
@@ -283,8 +342,39 @@ setInterval(()=>{
 },400);
 
 /* Final YES */
-yes2.onclick=function(){
-    secondPopup.innerHTML="<h1>Eaa pencet yes 😭</h1><p>fix nih km dah jadi pacar aku :p</p>";
+yes2.onclick = function(){
+
+    secondPopup.classList.add("hidden");
+
+    // Create ticket overlay
+    const ticketContainer = document.createElement("div");
+    ticketContainer.className = "ticket-container";
+
+    const ticket = document.createElement("div");
+    ticket.className = "ticket";
+
+    ticket.innerHTML = `
+        <h2>🍵 Matcha Cinema Reward 🍵</h2>
+        <p>Screenshot this to claim</p>
+        <div class="big-text">🍫 FREE BROWNIES 🍫</div>
+        <p style="margin-top:15px; font-size:14px; color:#777;">
+        Valid for 1 cute girlfriend only 💚
+        </p>
+    `;
+
+    ticketContainer.appendChild(ticket);
+    document.body.appendChild(ticketContainer);
+
+    // Sparkle explosion
+    for(let i=0;i<25;i++){
+        const sp=document.createElement("div");
+        sp.className="sparkle";
+        sp.innerHTML="✨";
+        sp.style.left=Math.random()*100+"vw";
+        sp.style.top=Math.random()*100+"vh";
+        document.body.appendChild(sp);
+        setTimeout(()=>sp.remove(),1000);
+    }
 }
 </script>
 
