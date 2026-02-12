@@ -6,9 +6,7 @@
 <title>For Ambar 💖</title>
 
 <style>
-* {
-    box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
 body {
     margin: 0;
@@ -23,7 +21,7 @@ body {
     padding: 20px;
 }
 
-/* Floating hearts background */
+/* Floating hearts */
 .heart {
     position: fixed;
     bottom: -50px;
@@ -40,7 +38,7 @@ body {
     }
 }
 
-/* Popup */
+/* Popup style */
 .popup {
     background: rgba(255,255,255,0.95);
     padding: 30px;
@@ -49,6 +47,7 @@ body {
     z-index: 10;
     max-width: 400px;
     width: 100%;
+    position: relative;
 }
 
 h1 {
@@ -72,26 +71,14 @@ button {
     transition: 0.3s;
 }
 
-#yesBtn {
-    background: #ff2e63;
-    color: white;
-    left: 15%;
-}
+#yesBtn { background: #ff2e63; color: white; left: 15%; }
+#yesBtn:hover { transform: scale(1.1); }
 
-#yesBtn:hover {
-    transform: scale(1.1);
-}
+#noBtn { background: #ccc; left: 55%; }
 
-#noBtn {
-    background: #ccc;
-    left: 55%;
-}
+.hidden { display: none; }
 
-.hidden {
-    display: none;
-}
-
-/* Success Scene */
+/* Success scene */
 #success {
     position: absolute;
     z-index: 20;
@@ -107,7 +94,6 @@ button {
     50% { transform: scale(1.2); }
 }
 
-/* Love Letter */
 .love-letter {
     margin-top: 20px;
     font-size: 18px;
@@ -130,6 +116,8 @@ button {
         transform: translateY(110vh) rotate(360deg);
         opacity: 0;
     }
+}
+
 @media (max-width: 500px) {
     h1 { font-size: 18px; }
     .love-letter { font-size: 16px; }
@@ -140,21 +128,31 @@ button {
 
 <body>
 
+<!-- First Popup -->
 <div class="popup" id="popup">
-    <h1>Ambar, will you be mine? 💕</h1>
+    <h1>Hi manis, will you be mine? 💕</h1>
     <div class="buttons">
         <button id="yesBtn">Yes 💖</button>
         <button id="noBtn">No 😢</button>
     </div>
 </div>
 
+<!-- Success Scene -->
 <div id="success" class="hidden">
     <div class="big-heart">💖</div>
-    <h1>She said YES 🥹✨</h1>
+    <h1>Omg omg you press YES 🥰✨</h1>
     <div class="love-letter" id="letter"></div>
 </div>
 
-<!-- Romantic Music (Replace src with your own if you want) -->
+<!-- Second Surprise Popup -->
+<div class="popup hidden" id="secondPopup">
+    <h1>Will you be my girlfriend? 💍💕</h1>
+    <div class="buttons">
+        <button id="yes2">YESSS 💖</button>
+        <button id="no2">No 🙈</button>
+    </div>
+</div>
+
 <audio id="music" loop>
     <source src="https://www.bensound.com/bensound-music/bensound-romantic.mp3" type="audio/mp3">
 </audio>
@@ -166,24 +164,31 @@ const popup = document.getElementById("popup");
 const success = document.getElementById("success");
 const letter = document.getElementById("letter");
 const music = document.getElementById("music");
+const secondPopup = document.getElementById("secondPopup");
+const no2 = document.getElementById("no2");
+const yes2 = document.getElementById("yes2");
 
 /* No button runs away */
-noBtn.addEventListener("mouseover", function() {
-    const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
-    const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
-    noBtn.style.position = "fixed";
-    noBtn.style.left = x + "px";
-    noBtn.style.top = y + "px";
-});
+function moveButton(btn) {
+    const x = Math.random() * 200 - 100;
+    const y = Math.random() * 100 - 50;
+    btn.style.transform = `translate(${x}px, ${y}px)`;
+}
 
-/* Yes clicked */
+noBtn.addEventListener("mouseover", () => moveButton(noBtn));
+noBtn.addEventListener("click", () => moveButton(noBtn));
+noBtn.addEventListener("touchstart", () => moveButton(noBtn));
+
+no2.addEventListener("mouseover", () => moveButton(no2));
+no2.addEventListener("click", () => moveButton(no2));
+no2.addEventListener("touchstart", () => moveButton(no2));
+
+/* Yes clicked first time */
 yesBtn.addEventListener("click", function() {
 
     popup.classList.add("hidden");
     success.classList.remove("hidden");
-    document.body.classList.add("blur-bg");
-
-    music.play();
+    music.play().catch(()=>{});
 
     startPetals();
     typeLetter();
@@ -193,15 +198,15 @@ yesBtn.addEventListener("click", function() {
 const message = 
 `Dear Ambar,
 
-From the moment you smiled,
+From the moment i know you,
 my world felt different.
 
 If you let me,
 I promise to make you laugh,
-to support your dreams,
+to support everything you want,
 and to love you endlessly.
 
-Today starts our beautiful story 💕`;
+Maybe we can starts our beautiful story 💕`;
 
 function typeLetter() {
     let i = 0;
@@ -210,6 +215,10 @@ function typeLetter() {
             letter.innerHTML += message.charAt(i);
             i++;
             setTimeout(typing, 40);
+        } else {
+            setTimeout(() => {
+                secondPopup.classList.remove("hidden");
+            }, 800);
         }
     }
     typing();
@@ -229,7 +238,7 @@ function startPetals() {
     }, 300);
 }
 
-/* Floating hearts background */
+/* Floating hearts */
 function createHeart() {
     const heart = document.createElement("div");
     heart.classList.add("heart");
@@ -241,6 +250,11 @@ function createHeart() {
     setTimeout(() => heart.remove(), 6000);
 }
 setInterval(createHeart, 400);
+
+/* Second YES */
+yes2.addEventListener("click", function(){
+    secondPopup.innerHTML = "<h1>She said YES AGAIN 😭💖</h1>";
+});
 </script>
 
 </body>
