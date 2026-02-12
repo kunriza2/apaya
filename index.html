@@ -3,290 +3,350 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Matcha Love for Ambar 🍵💚</title>
+<title>Legendary Matcha Love 🍵💚</title>
 
 <style>
-* { box-sizing: border-box; margin:0; padding:0; }
-
-body {
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-family: 'Segoe UI', sans-serif;
-    overflow: hidden;
-    text-align: center;
-    padding: 20px;
-    background: linear-gradient(135deg, #e6f2e6, #d8e9d8, #f4efe6);
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+font-family:'Segoe UI',sans-serif;
+overflow:hidden;
+text-align:center;
+background:linear-gradient(135deg,#e6f2e6,#d8e9d8,#f4efe6);
+transition:background 2s ease;
 }
 
-/* ===== POPUP ===== */
-.popup {
-    background: rgba(255,255,255,0.95);
-    padding: 30px;
-    border-radius: 25px;
-    box-shadow: 0 15px 40px rgba(0,0,0,0.15);
-    max-width: 420px;
-    width: 100%;
-    z-index: 10;
+/* POPUP */
+.popup{
+background:rgba(255,255,255,0.95);
+padding:30px;
+border-radius:25px;
+box-shadow:0 15px 40px rgba(0,0,0,0.15);
+max-width:420px;
+width:100%;
+z-index:10;
+position:relative;
 }
 
-.buttons {
-    margin-top: 20px;
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    position: relative;
+.buttons{
+margin-top:20px;
+display:flex;
+justify-content:center;
+gap:20px;
 }
 
-button {
-    padding: 12px 22px;
-    font-size: 16px;
-    border-radius: 30px;
-    border: none;
-    cursor: pointer;
-    transition: 0.3s;
+button{
+padding:12px 22px;
+font-size:16px;
+border-radius:30px;
+border:none;
+cursor:pointer;
+transition:0.3s;
 }
 
-#yesBtn, #yes2 {
-    background: #7fbf7f;
-    color: white;
-    box-shadow: 0 5px 15px rgba(127,191,127,0.5);
+#yesBtn,#yes2{
+background:#7fbf7f;
+color:white;
+box-shadow:0 5px 15px rgba(127,191,127,0.5);
+}
+#yesBtn:hover,#yes2:hover{transform:scale(1.1);}
+#noBtn,#no2{background:#ddd;}
+.hidden{display:none;}
+
+/* HEART SHAPE */
+.heart{
+position:fixed;
+width:20px;height:20px;
+background:#7fbf7f;
+transform:rotate(45deg);
+animation:floatUp linear infinite;
+opacity:0.7;
+}
+.heart:before,.heart:after{
+content:"";
+position:absolute;
+width:20px;height:20px;
+background:#7fbf7f;
+border-radius:50%;
+}
+.heart:before{top:-10px;}
+.heart:after{left:-10px;}
+@keyframes floatUp{
+to{transform:translateY(-110vh) rotate(45deg);opacity:0;}
 }
 
-#yesBtn:hover, #yes2:hover {
-    transform: scale(1.1);
+/* BIG HEART */
+.big-heart{
+width:100px;height:100px;
+background:#7fbf7f;
+margin:0 auto;
+transform:rotate(45deg);
+animation:beat 1s infinite;
+position:relative;
+}
+.big-heart:before,.big-heart:after{
+content:"";
+position:absolute;
+width:100px;height:100px;
+background:#7fbf7f;
+border-radius:50%;
+}
+.big-heart:before{top:-50px;}
+.big-heart:after{left:-50px;}
+@keyframes beat{50%{transform:scale(1.15) rotate(45deg);}}
+
+/* LETTER */
+.love-letter{
+margin-top:20px;
+font-size:18px;
+color:#4b6f4b;
+min-height:120px;
+white-space:pre-line;
 }
 
-#noBtn, #no2 {
-    background: #ddd;
+/* PETALS */
+.petal{
+position:fixed;
+top:-20px;
+font-size:20px;
+animation:fall linear forwards;
+}
+@keyframes fall{
+to{transform:translateY(110vh) rotate(360deg);opacity:0;}
 }
 
-.hidden { display: none; }
+/* CINEMATIC OVERLAY */
+.overlay{
+position:fixed;
+inset:0;
+background:rgba(0,0,0,0.5);
+backdrop-filter:blur(3px);
+opacity:0;
+transition:opacity 2s ease;
+z-index:8;
+}
+.overlay.active{opacity:1;}
 
-/* ===== MATCHA HEART SHAPE ===== */
-.heart {
-    position: fixed;
-    width: 20px;
-    height: 20px;
-    background: #7fbf7f;
-    transform: rotate(45deg);
-    animation: floatUp linear infinite;
-    opacity: 0.7;
+/* RING */
+.ring{
+position:fixed;
+top:-150px;
+left:50%;
+transform:translateX(-50%);
+font-size:60px;
+transition:top 1.5s ease;
+z-index:20;
+}
+.ring.drop{top:40%;}
+
+/* NIGHT MODE */
+.night{
+background:radial-gradient(circle,#1b2b1b,#0f1a0f);
 }
 
-.heart::before,
-.heart::after {
-    content: "";
-    position: absolute;
-    width: 20px;
-    height: 20px;
-    background: #7fbf7f;
-    border-radius: 50%;
+/* STARS */
+.star{
+position:fixed;
+width:2px;height:2px;
+background:white;
+animation:twinkle 2s infinite alternate;
+}
+@keyframes twinkle{
+from{opacity:0.2;}
+to{opacity:1;}
 }
 
-.heart::before { top: -10px; left: 0; }
-.heart::after { left: -10px; top: 0; }
-
-@keyframes floatUp {
-    to {
-        transform: translateY(-110vh) rotate(45deg);
-        opacity: 0;
-    }
+/* FIREWORK */
+.firework{
+position:fixed;
+font-size:20px;
+animation:explode 1s ease-out forwards;
+z-index:30;
+}
+@keyframes explode{
+0%{transform:scale(0.5);opacity:1;}
+100%{transform:scale(3);opacity:0;}
 }
 
-/* ===== BIG HEART ===== */
-.big-heart {
-    width: 100px;
-    height: 100px;
-    background: #7fbf7f;
-    position: relative;
-    transform: rotate(45deg);
-    margin: 0 auto;
-    animation: beat 1s infinite;
+/* SPARKLE */
+.sparkle{
+position:fixed;
+font-size:15px;
+animation:sparkle 1s ease-out forwards;
+}
+@keyframes sparkle{
+0%{transform:scale(0.5);opacity:1;}
+100%{transform:scale(2);opacity:0;}
 }
 
-.big-heart::before,
-.big-heart::after {
-    content: "";
-    position: absolute;
-    width: 100px;
-    height: 100px;
-    background: #7fbf7f;
-    border-radius: 50%;
-}
-
-.big-heart::before { top: -50px; left: 0; }
-.big-heart::after { left: -50px; top: 0; }
-
-@keyframes beat {
-    50% { transform: scale(1.15) rotate(45deg); }
-}
-
-/* ===== LOVE LETTER ===== */
-.love-letter {
-    margin-top: 20px;
-    font-size: 18px;
-    color: #4b6f4b;
-    min-height: 120px;
-    white-space: pre-line;
-}
-
-/* ===== SAKURA PETALS ===== */
-.petal {
-    position: fixed;
-    top: -20px;
-    font-size: 20px;
-    animation: fall linear forwards;
-}
-
-@keyframes fall {
-    to {
-        transform: translateY(110vh) rotate(360deg);
-        opacity: 0;
-    }
-}
-
-/* ===== MOBILE ===== */
-@media (max-width:500px){
-    h1 { font-size: 20px; }
-    .love-letter { font-size: 16px; }
-    .big-heart { width:70px; height:70px; }
+@media(max-width:500px){
+.big-heart{width:70px;height:70px;}
 }
 </style>
 </head>
-
 <body>
 
-<!-- FIRST POPUP -->
 <div class="popup" id="popup">
-    <h1>Hi manis, will you be my valentine? 💚</h1>
-    <div class="buttons">
-        <button id="yesBtn">Yes 💚</button>
-        <button id="noBtn">No 🙈</button>
-    </div>
+<h1>Hi manis, will you be my valentine? 💚</h1>
+<div class="buttons">
+<button id="yesBtn">Yes 💚</button>
+<button id="noBtn">No 🙈</button>
+</div>
 </div>
 
-<!-- SUCCESS SCENE -->
 <div id="success" class="hidden">
-    <div class="big-heart"></div>
-    <h1 style="margin-top:20px;">You chose matcha love 💚💚</h1>
-    <div class="love-letter" id="letter"></div>
+<div class="big-heart"></div>
+<h1 style="margin-top:20px;">You chose matcha love 💚</h1>
+<div class="love-letter" id="letter"></div>
 </div>
 
-<!-- SECOND POPUP -->
-<div class="popup hidden" id="secondPopup" style="position:absolute; z-index:15;">
-    <h1>Will you be my girlfriend? 💍</h1>
-    <div class="buttons">
-        <button id="yes2">YES 💚</button>
-        <button id="no2">No 🙈</button>
-    </div>
+<div class="popup hidden" id="secondPopup" style="position:absolute;z-index:15;opacity:0;transform:scale(0.8);transition:0.8s;">
+<h1>Will you be my girlfriend? 💍</h1>
+<div class="buttons">
+<button id="yes2">YES 💚</button>
+<button id="no2">No 🙈</button>
 </div>
+</div>
+
+<div class="overlay" id="overlay"></div>
+<div class="ring" id="ring">💍</div>
 
 <audio id="music" loop>
-    <source src="https://www.bensound.com/bensound-music/bensound-romantic.mp3" type="audio/mp3">
+<source src="https://www.bensound.com/bensound-music/bensound-romantic.mp3">
+</audio>
+<audio id="heartbeat">
+<source src="https://assets.mixkit.co/active_storage/sfx/2571/2571-preview.mp3">
 </audio>
 
 <script>
-const yesBtn = document.getElementById("yesBtn");
-const noBtn = document.getElementById("noBtn");
-const popup = document.getElementById("popup");
-const success = document.getElementById("success");
-const letter = document.getElementById("letter");
-const secondPopup = document.getElementById("secondPopup");
-const no2 = document.getElementById("no2");
-const yes2 = document.getElementById("yes2");
-const music = document.getElementById("music");
+const yesBtn=document.getElementById("yesBtn");
+const noBtn=document.getElementById("noBtn");
+const popup=document.getElementById("popup");
+const success=document.getElementById("success");
+const letter=document.getElementById("letter");
+const secondPopup=document.getElementById("secondPopup");
+const no2=document.getElementById("no2");
+const yes2=document.getElementById("yes2");
+const overlay=document.getElementById("overlay");
+const ring=document.getElementById("ring");
+const music=document.getElementById("music");
+const heartbeat=document.getElementById("heartbeat");
 
 /* Runaway NO */
-function moveButton(btn){
-    const x = Math.random()*150 - 75;
-    const y = Math.random()*80 - 40;
-    btn.style.transform = `translate(${x}px,${y}px)`;
+function move(btn){
+btn.style.transform=`translate(${Math.random()*150-75}px,${Math.random()*80-40}px)`;
 }
+noBtn.onmouseenter=()=>move(noBtn);
+no2.onmouseenter=()=>move(no2);
 
-noBtn.addEventListener("mouseenter",()=>moveButton(noBtn));
-noBtn.addEventListener("touchstart",()=>moveButton(noBtn));
-no2.addEventListener("mouseenter",()=>moveButton(no2));
-no2.addEventListener("touchstart",()=>moveButton(no2));
-
-/* YES CLICK */
-yesBtn.onclick = function(){
-    popup.classList.add("hidden");
-    success.classList.remove("hidden");
-    music.play().catch(()=>{});
-    startPetals();
-    typeLetter();
-}
-
-/* Love Letter Typing */
-const message =
-`Dear Ambar,
-
-Like matcha — gentle,
-comforting,
-and beautifully calm —
-
-you make my world softer.
-
-If you allow me,
-I want to walk beside you,
-support your dreams,
-and choose you every single day.
-
-Let’s write our story together 💚`;
-
-function typeLetter(){
-    let i = 0;
-
-    function typing(){
-        if(i < message.length){
-            letter.innerHTML += message.charAt(i);
-            i++;
-            setTimeout(typing, 40);
-        } else {
-            // Wait 10 seconds AFTER letter finishes
-            setTimeout(() => {
-                secondPopup.classList.remove("hidden");
-            }, 6000); // 10000ms = 10 seconds
-        }
-    }
-
-    typing();
-}
-
-
-/* Sakura petals */
-function startPetals(){
-    setInterval(()=>{
-        const petal=document.createElement("div");
-        petal.className="petal";
-        petal.innerHTML="🌸";
-        petal.style.left=Math.random()*100+"vw";
-        petal.style.fontSize=(Math.random()*15+15)+"px";
-        petal.style.animationDuration=(Math.random()*3+3)+"s";
-        document.body.appendChild(petal);
-        setTimeout(()=>petal.remove(),6000);
-    },300);
-}
-
-/* Floating matcha hearts */
+/* Floating hearts */
 setInterval(()=>{
-    const heart=document.createElement("div");
-    heart.className="heart";
-    heart.style.left=Math.random()*100+"vw";
-    heart.style.width=(Math.random()*15+15)+"px";
-    heart.style.height=heart.style.width;
-    heart.style.animationDuration=(Math.random()*3+3)+"s";
-    document.body.appendChild(heart);
-    setTimeout(()=>heart.remove(),6000);
+const h=document.createElement("div");
+h.className="heart";
+h.style.left=Math.random()*100+"vw";
+h.style.width=(Math.random()*15+15)+"px";
+h.style.height=h.style.width;
+h.style.animationDuration=(Math.random()*3+3)+"s";
+document.body.appendChild(h);
+setTimeout(()=>h.remove(),6000);
 },400);
 
-/* Final YES */
-yes2.onclick=function(){
-    secondPopup.innerHTML="<h1>Eaa pencet yes 😭</h1><p>fix nih km dah jadi pacar aku :p</p>";
+/* Petals */
+function petals(){
+setInterval(()=>{
+const p=document.createElement("div");
+p.className="petal";
+p.innerHTML="🌸";
+p.style.left=Math.random()*100+"vw";
+p.style.animationDuration=(Math.random()*3+3)+"s";
+document.body.appendChild(p);
+setTimeout(()=>p.remove(),6000);
+},300);
 }
-</script>
 
+/* Love letter */
+const message=`Dear Ambar,
+
+Like matcha — gentle and calming —
+you make everything better.
+
+Let me choose you,
+today and every day.
+
+Will you make this story ours? 💚`;
+
+function typeLetter(){
+let i=0;
+function typing(){
+if(i<message.length){
+letter.innerHTML+=message[i];
+i++;
+setTimeout(typing,40);
+}else{
+overlay.classList.add("active");
+music.volume=0.3;
+heartbeat.play().catch(()=>{});
+setTimeout(()=>{
+heartbeat.pause();
+ring.classList.add("drop");
+setTimeout(()=>{
+secondPopup.classList.remove("hidden");
+secondPopup.style.opacity="1";
+secondPopup.style.transform="scale(1)";
+},1500);
+},10000);
+}
+}
+typing();
+}
+
+yesBtn.onclick=function(){
+popup.classList.add("hidden");
+success.classList.remove("hidden");
+music.play().catch(()=>{});
+petals();
+typeLetter();
+};
+
+/* FINAL YES */
+yes2.onclick=function(){
+document.body.classList.add("night");
+secondPopup.innerHTML="<h1>SHE SAID YES 😭💚</h1><p>Legendary Matcha Girlfriend Unlocked 💍</p>";
+
+/* stars */
+for(let i=0;i<100;i++){
+const s=document.createElement("div");
+s.className="star";
+s.style.left=Math.random()*100+"vw";
+s.style.top=Math.random()*100+"vh";
+document.body.appendChild(s);
+}
+
+/* fireworks */
+for(let i=0;i<20;i++){
+const f=document.createElement("div");
+f.className="firework";
+f.innerHTML="💚";
+f.style.left=Math.random()*100+"vw";
+f.style.top=Math.random()*100+"vh";
+document.body.appendChild(f);
+setTimeout(()=>f.remove(),1000);
+}
+
+/* sparkles */
+for(let i=0;i<30;i++){
+const sp=document.createElement("div");
+sp.className="sparkle";
+sp.innerHTML="✨";
+sp.style.left=Math.random()*100+"vw";
+sp.style.top=Math.random()*100+"vh";
+document.body.appendChild(sp);
+setTimeout(()=>sp.remove(),1000);
+}
+};
+</script>
 </body>
 </html>
